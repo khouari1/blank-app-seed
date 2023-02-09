@@ -13,6 +13,16 @@ import { defaultLayout, loginLayout } from '../layouts';
 import { Home } from './home/home';
 import { NotFound } from './not-found/not-found';
 
+// eslint-disable-next-line
+declare var ENABLE_SSO: string;
+
+const ssoSettings = ENABLE_SSO
+  ? {
+      ssoEnable: true,
+      allowAutoAuth: true,
+    }
+  : {};
+
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
   constructor(
     @Auth private auth: Auth,
@@ -38,7 +48,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
         element: Login,
         title: 'Login',
         name: 'login',
-        settings: { public: true, defaultRedirectUrl: 'home', autoConnect: true },
+        settings: { public: true, defaultRedirectUrl: 'home', autoConnect: true, ...ssoSettings },
         layout: loginLayout,
       },
       { path: 'home', element: Home, title: 'Home', name: 'home', settings: commonSettings },
